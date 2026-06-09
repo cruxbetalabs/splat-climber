@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Splat Climber</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div id="viewport">
+        <canvas id="canvas"></canvas>
+      </div>
+      <aside id="panel">
+        <header>
+          <h1>Splat Climber</h1>
+          <p class="subtitle">Climbing simulator over Gaussian splats</p>
+        </header>
+
+        <section>
+          <h2>Scene</h2>
+
+          <div class="file-slot" id="slot-splat">
+            <span class="file-slot-kind">Splat</span>
+            <button type="button" class="file-slot-idle file-btn">Choose splat (.ply, .compressed.ply, .sog)</button>
+            <div class="file-slot-loaded" hidden>
+              <span class="file-slot-name"></span>
+              <button type="button" class="file-slot-replace secondary">Replace</button>
+            </div>
+            <input type="file" id="splat-input" accept=".ply,.sog,.compressed.ply" hidden />
+          </div>
+
+          <div class="file-slot" id="slot-voxel-json">
+            <span class="file-slot-kind">Voxel JSON</span>
+            <button type="button" class="file-slot-idle file-btn">Choose scene.voxel.json</button>
+            <div class="file-slot-loaded" hidden>
+              <span class="file-slot-name"></span>
+              <button type="button" class="file-slot-replace secondary">Replace</button>
+            </div>
+            <input type="file" id="voxel-json-input" accept=".json,.voxel.json" hidden />
+          </div>
+
+          <div class="file-slot" id="slot-voxel-bin">
+            <span class="file-slot-kind">Voxel BIN</span>
+            <button type="button" class="file-slot-idle file-btn">Choose scene.voxel.bin</button>
+            <div class="file-slot-loaded" hidden>
+              <span class="file-slot-name"></span>
+              <button type="button" class="file-slot-replace secondary">Replace</button>
+            </div>
+            <input type="file" id="voxel-bin-input" accept=".bin,.voxel.bin" hidden />
+          </div>
+
+          <div class="file-slot optional" id="slot-annotations">
+            <span class="file-slot-kind">Annotations</span>
+            <button type="button" class="file-slot-idle file-btn secondary">Choose .climb.json (optional)</button>
+            <div class="file-slot-loaded" hidden>
+              <span class="file-slot-name"></span>
+              <button type="button" class="file-slot-replace secondary">Replace</button>
+            </div>
+            <input type="file" id="annotations-input" accept=".json,.climb.json" hidden />
+          </div>
+
+          <p id="scene-status" class="status">Load a splat to begin.</p>
+        </section>
+
+        <section>
+          <h2>Grips</h2>
+          <div class="mode-row mode-row-3">
+            <button type="button" id="mode-navigate" class="mode active">Navigate</button>
+            <button type="button" id="mode-add-grip" class="mode">Add grip</button>
+            <button type="button" id="mode-move-puppet" class="mode">Pose limbs</button>
+          </div>
+          <input type="text" id="grip-label" placeholder="Grip label (optional)" />
+          <ul id="grip-list"></ul>
+          <button type="button" id="delete-grip" class="secondary" disabled>Delete selected</button>
+        </section>
+
+        <section>
+          <h2>Start pose</h2>
+          <div class="limb-row">
+            <label>LH <select id="limb-lh"><option value="">—</option></select></label>
+            <label>RH <select id="limb-rh"><option value="">—</option></select></label>
+          </div>
+          <div class="limb-row">
+            <label>LF <select id="limb-lf"><option value="">—</option></select></label>
+            <label>RF <select id="limb-rf"><option value="">—</option></select></label>
+          </div>
+          <button type="button" id="set-start">Set start from puppet</button>
+          <button type="button" id="reset-start" class="secondary">Pose puppet at grips</button>
+        </section>
+
+        <section>
+          <h2>Export</h2>
+          <button type="button" id="export-annotations">Export .climb.json</button>
+        </section>
+
+        <footer>
+          <span id="renderer-label">Renderer: …</span>
+          <p class="controls-hint">Drag orbit · Scroll zoom · WASD move · Q/E down/up</p>
+          <p class="controls-hint">Pose limbs: drag hand/foot to grip · Shift+drag = up/down</p>
+        </footer>
+      </aside>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "collision": {
+    "voxelResolution": 0.05,
+    "gridBounds": {
+      "min": [-2.4, 0.0, -0.8],
+      "max": [3.6, 4.0, 0.4]
+    }
+  },
+  "grips": [
+    {
+      "id": "lh_start",
+      "voxel": [18, 12, 14],
+      "normal": [0, 0, 1],
+      "label": "starting left hand"
+    },
+    {
+      "id": "rh_start",
+      "voxel": [42, 12, 14],
+      "normal": [0, 0, 1],
+      "label": "starting right hand"
+    },
+    {
+      "id": "lf_start",
+      "voxel": [22, 4, 14],
+      "normal": [0, 0, 1],
+      "label": "starting left foot"
+    },
+    {
+      "id": "rf_start",
+      "voxel": [38, 4, 14],
+      "normal": [0, 0, 1],
+      "label": "starting right foot"
+    },
+    {
+      "id": "rh_crux",
+      "voxel": [44, 28, 13],
+      "normal": [0.05, 0.02, 0.998],
+      "label": "crux"
+    }
+  ],
+  "start": {
+    "pelvis": [0.85, 1.05, -0.35],
+    "facing": [0, 0, -1],
+    "limbs": {
+      "LH": "lh_start",
+      "RH": "rh_start",
+      "LF": "lf_start",
+      "RF": "rf_start"
+    }
+  },
+  "meta": {
+    "label": "Mosaic Bounty — ground start",
+    "splatHint": "scene.sog",
+    "voxelHint": "scene.voxel.json"
+  }
+}

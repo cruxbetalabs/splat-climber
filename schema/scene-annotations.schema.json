@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/crux-beta-labs/splat-climber/schema/scene-annotations/v1",
+  "title": "Splat Climber Scene Annotations",
+  "description": "Grip points and start pose for a climbing simulator session. Exported after in-scene authoring; optional on import.",
+  "type": "object",
+  "required": ["version", "grips", "start"],
+  "additionalProperties": false,
+  "properties": {
+    "version": {
+      "type": "integer",
+      "const": 1,
+      "description": "Schema version. Increment on breaking changes."
+    },
+    "collision": {
+      "type": "object",
+      "description": "Snapshot of the voxel grid this file was authored against. Used to validate grip indices on import.",
+      "required": ["voxelResolution", "gridBounds"],
+      "additionalProperties": false,
+      "properties": {
+        "voxelResolution": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "description": "Meters per voxel edge. Must match scene.voxel.json."
+        },
+        "gridBounds": {
+          "type": "object",
+          "required": ["min", "max"],
+          "additionalProperties": false,
+          "properties": {
+            "min": { "$ref": "#/$defs/vec3" },
+            "max": { "$ref": "#/$defs/vec3" }
+          }
+        }
+      }
+    },
+    "grips": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/grip" }
+    },
+    "start": {
+      "$ref": "#/$defs/startPose"
+    },
+    "meta": {
+      "type": "object",
+      "description": "Optional authoring metadata. Ignored by runtime.",
+      "additionalProperties": true,
+      "properties": {
+        "label": { "type": "string", "description": "Human name, e.g. \"Mosaic Bounty start\"" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "splatHint": { "type": "string", "description": "Original splat filename, not used for loading." },
+        "voxelHint": { "type": "string", "description": "Original voxel JSON filename, not used for loading." }
+      }
+    }
+  },
+  "$defs": {
+    "vec3": {
+      "type": "array",
+      "items": { "type": "number" },
+      "minItems": 3,
+      "maxItems": 3
+    },
+    "gripId": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-zA-Z0-9_-]+$",
+      "description": "Stable identifier referenced by start.limbs."
+    },
+    "grip": {
+      "type": "object",
+      "required": ["id", "voxel"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "$ref": "#/$defs/gripId" },
+        "voxel": {
+          "$ref": "#/$defs/vec3",
+          "description": "Integer grid indices [ix, iy, iz] into the collision octree. Origin is collision.gridBounds.min."
+        },
+        "normal": {
+          "$ref": "#/$defs/vec3",
+          "description": "Outward face normal (unit vector, PlayCanvas space). Hand orientation at this grip."
+        },
+        "offset": {
+          "$ref": "#/$defs/vec3",
+          "description": "World-space offset in meters from the voxel cell center. Usually zero."
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional display name, e.g. \"crux\", \"starting right hand\"."
+        }
+      }
+    },
+    "limbSlot": {
+      "type": "string",
+      "enum": ["LH", "RH", "LF", "RF"],
+      "description": "Left/right hand or foot."
+    },
+    "startPose": {
+      "type": "object",
+      "required": ["pelvis", "limbs"],
+      "additionalProperties": false,
+      "properties": {
+        "pelvis": {
+          "$ref": "#/$defs/vec3",
+          "description": "Root body position in world meters (PlayCanvas space)."
+        },
+        "facing": {
+          "$ref": "#/$defs/vec3",
+          "description": "Horizontal look direction (unit vector, Y component typically 0). Pelvis yaw derived from this."
+        },
+        "limbs": {
+          "type": "object",
+          "description": "Maps each limb to a grip id. Omitted limbs hang free.",
+          "additionalProperties": false,
+          "properties": {
+            "LH": { "$ref": "#/$defs/gripId" },
+            "RH": { "$ref": "#/$defs/gripId" },
+            "LF": { "$ref": "#/$defs/gripId" },
+            "RF": { "$ref": "#/$defs/gripId" }
+          }
+        }
+      }
+    }
+  }
+}
